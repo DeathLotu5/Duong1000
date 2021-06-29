@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        </style>
+</head>
+<body>
+    <input type="text" id="name">
+    <input type="text" id="phone">
+    <button onclick="onCreatLists()">Add</button>
+    <button onclick="onEditListHandle()">Edit</button>
+    <h2>HTML Table</h2>
+
+    <table id="listNote">
+      <tr>
+        <th>Company</th>
+        <th>Contact</th>
+        <th>Action</th>
+      </tr>
+    </table>
+      <script>
+
+          var listId;
+          var lists = [
+              {
+                  name: 'Duong',
+                  phone: 0989211621
+              },
+              {
+                  name: 'Duong 2',
+                  phone: 0989211621
+              }
+          ]
+
+          document.addEventListener('DOMContentLoaded', function() {
+            displayLists();
+          });
+
+        //   In ra giá trị nhập vào
+          function displayLists() {
+            var html = '';
+            for (var i = 0; i < lists.length; i++) {
+                var list = lists[i];
+                html += '<tr>';
+                html += '<td>' + list.name + '</td>'
+                html += '<td>' + list.phone + '</td>'
+                html += '<td><a onclick="onEditLists(' + i + ')">Edit</a> <a onclick="onDeleteLists(' + i + ')">Delete</a></td>'
+                html += '</tr>'
+            }
+            var companyList = document.getElementById('listNote');
+            companyList.innerHTML = html;
+          }
+          
+          function onCreatLists() {
+              var name = getInputValue('name');
+              var phone = getInputValue('phone');
+
+              var list = {
+                  name: name,
+                  phone: phone
+              };
+
+              addCompany(list);
+              
+              displayLists();
+          };
+
+          function getInputValue(selector) {
+              var inputElement = document.getElementById(selector);
+              return inputElement.value;
+          };
+
+          function addCompany(list) {
+              lists.push(list);
+          }
+          
+        //   Sửa giá trị đã nhập
+          function onEditListHandle() {
+            var name = getInputValue('name');
+            var phone = getInputValue('phone')
+
+            lists[listId] = {
+                name: name,
+                phone: phone
+            };
+            displayLists();
+          };
+
+          function onEditLists(index) {
+
+            listId = index;
+            
+            var listGeted = lists[index];
+            setInputValue('name', listGeted.name);
+            setInputValue('phone', listGeted.phone);
+          };
+
+          function setInputValue(selector, value) {
+            var element = document.getElementById(selector);
+            element.value = value;
+          };
+          
+        //   Xóa giá trị đã nhập
+          function onDeleteLists(index) {
+              if (confirm('Chắc chưa?')) {
+                deleteList(index);
+
+                displayLists();
+              } 
+          };
+
+          function deleteList(index) {
+              lists.splice(index, 1);
+          };
+
+      </script>
+</body>
+</html>
